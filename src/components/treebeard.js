@@ -26,7 +26,8 @@ class TreeBeard extends React.Component {
                               key={node.id || index}
                               node={node}
                               onToggle={onToggle}
-                              style={style.tree.node}/>
+                              style={style.tree.node}
+                              depth={0} />
                 )}
             </ul>
         );

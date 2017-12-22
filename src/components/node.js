@@ -109,7 +109,8 @@ class TreeNode extends React.Component {
                                                           decorators={propDecorators}
                                                           key={child.id || index}
                                                           node={child}
-                                                          style={style}/>
+                                                          style={style}
+                                                          depth={this.props.depth + 1} />
                 )}
             </ul>
         );
@@ -144,7 +145,8 @@ TreeNode.propTypes = {
         PropTypes.object,
         PropTypes.bool
     ]).isRequired,
-    onToggle: PropTypes.func
+    onToggle: PropTypes.func,
+    depth: PropTypes.number.isRequired
 };
 
 export default TreeNode;
