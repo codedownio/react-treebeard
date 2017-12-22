@@ -78,19 +78,20 @@ class TreeNode extends React.Component {
     }
 
     renderHeader(decorators, animations) {
-        const {node, style} = this.props;
+        const {node, style, depth} = this.props;
 
         return (
             <NodeHeader animations={animations}
                         decorators={decorators}
                         node={Object.assign({}, node)}
                         onClick={this.onClick}
-                        style={style}/>
+                        style={style}
+                        depth={depth} />
         );
     }
 
     renderChildren(decorators) {
-        const {animations, decorators: propDecorators, node, style} = this.props;
+        const {animations, decorators: propDecorators, node, style, depth} = this.props;
 
         if (node.loading) {
             return this.renderLoading(decorators);
@@ -110,7 +111,7 @@ class TreeNode extends React.Component {
                                                           key={child.id || index}
                                                           node={child}
                                                           style={style}
-                                                          depth={this.props.depth + 1} />
+                                                          depth={depth + 1} />
                 )}
             </ul>
         );
