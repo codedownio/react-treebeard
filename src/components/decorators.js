@@ -2,7 +2,6 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import Radium from 'radium';
 
 const Loading = ({style}) => {
     return <div style={style}>loading...</div>;
@@ -45,7 +44,6 @@ Header.propTypes = {
     node: PropTypes.object.isRequired
 };
 
-@Radium
 class Container extends React.Component {
     render() {
         const {style, decorators, terminal, onClick, node} = this.props;
@@ -63,8 +61,6 @@ class Container extends React.Component {
     }
 
     renderToggle() {
-        const {animations} = this.props;
-
         return this.renderToggleDecorator();
     }
 
