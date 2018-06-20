@@ -10,7 +10,7 @@ import defaultAnimations from '../themes/animations';
 
 class TreeBeard extends React.Component {
     render() {
-        const {animations, decorators, data: propsData, onToggle, style} = this.props;
+        const {animations, decorators, data: propsData, onToggle, style, getExtraChildren} = this.props;
         let data = propsData;
 
         // Support Multiple Root Nodes. Its not formally a tree, but its a use-case.
@@ -27,6 +27,7 @@ class TreeBeard extends React.Component {
                               node={node}
                               onToggle={onToggle}
                               style={style.tree.node}
+                              getExtraChildren={getExtraChildren}
                               depth={0} />
                 )}
             </ul>
@@ -51,7 +52,8 @@ TreeBeard.propTypes = {
 TreeBeard.defaultProps = {
     style: defaultTheme,
     animations: defaultAnimations,
-    decorators: defaultDecorators
+    decorators: defaultDecorators,
+    getExtraChildren: PropTypes.func
 };
 
 export default TreeBeard;

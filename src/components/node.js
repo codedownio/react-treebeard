@@ -14,19 +14,14 @@ class TreeNode extends React.Component {
 
     onClick() {
         const {node, onToggle} = this.props;
-        const {toggled} = node;
 
-        if (onToggle) {
-            onToggle(node, !toggled);
-        }
+        if (onToggle) onToggle(node, !node.toggled);
     }
 
     animations() {
         const {animations, node} = this.props;
 
-        if (animations === false) {
-            return false;
-        }
+        if (animations === false) return false;
 
         const anim = Object.assign({}, animations, node.animations);
         return {
@@ -59,13 +54,12 @@ class TreeNode extends React.Component {
     }
 
     renderDrawer(decorators, animations) {
-        const {node: {toggled}} = this.props;
+        const {node, getExtraChildren} = this.props;
 
-        if (!toggled) {
-            return null;
-        } else {
-            return this.renderChildren(decorators, animations);
-        }
+        let extraChildren = (getExtraChildren && getExtraChildren(node)) || [];
+        let toggled = (!!extraChildren) || node.toggled;
+
+        if (toggled) return this.renderChildren(decorators, animations);
     }
 
     renderHeader(decorators, animations) {
@@ -82,7 +76,7 @@ class TreeNode extends React.Component {
     }
 
     renderChildren(decorators) {
-        const {animations, decorators: propDecorators, node, style, depth} = this.props;
+        const {animations, getExtraChildren, decorators: propDecorators, node, style, depth} = this.props;
 
         if (node.loading) {
             return this.renderLoading(decorators);
@@ -93,6 +87,8 @@ class TreeNode extends React.Component {
             children = children ? [children] : [];
         }
 
+        let extraChildren = (getExtraChildren && getExtraChildren(node)) || [];
+
         return (
             <ul style={style.subtree}
                 ref={ref => this.subtreeRef = ref}>
@@ -102,7 +98,18 @@ class TreeNode extends React.Component {
                                                           key={child.id || index}
                                                           node={child}
                                                           style={style}
+                                                          getExtraChildren={getExtraChildren}
                                                           depth={depth + 1} />
+                )}
+
+                {extraChildren.map((child, index) => <TreeNode {...this._eventBubbles()}
+                                                               animations={animations}
+                                                               decorators={propDecorators}
+                                                               key={"extra" + (child.id || index)}
+                                                               node={child}
+                                                               style={style}
+                                                               getExtraChildren={getExtraChildren}
+                                                               depth={depth + 1} />
                 )}
             </ul>
         );
@@ -138,7 +145,8 @@ TreeNode.propTypes = {
         PropTypes.bool
     ]).isRequired,
     onToggle: PropTypes.func,
-    depth: PropTypes.number.isRequired
+    depth: PropTypes.number.isRequired,
+    getExtraChildren: PropTypes.func
 };
 
 export default TreeNode;
